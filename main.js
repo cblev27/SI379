@@ -10,7 +10,7 @@ const interval = setInterval(() => {
         const moleHole = document.getElementById(randomHoleID);
         moleHole.classList.add('needs-whack');
         
-        console.log(`Added "needs-whack" class to hole with id ${randomHoleId}`);
+        console.log(`Added 'needs-whack' class to hole with id ${randomHoleId}`);
     }
     
 }, 1000);
@@ -23,7 +23,7 @@ for(const id of getAllHoleIds()) {
             clickedHole.classList.remove('needs-whack');
             clickedHole.classList.add('animating-whack');
             setTimeout(() => {
-                clickedHole,classList.remove('animating-whack');}, 500);
+                clickedHole.classList.remove('animating-whack');}, 500);
         
         function updateScoreDisplay() {
             const scoreDisplay = document.getElementById('score');
