@@ -1,0 +1,64 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2; /* Light grey background */
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #ff66cc; /* Pink for the heading */
+    text-align: center;
+    margin-top: 40px;
+}
+
+.container {
+    background-color: #fff; /* White container background */
+    border: 2px solid #ccc; /* Grey border */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#display {
+    font-size: 1.2em;
+    margin-top: 20px;
+    border: 1px solid #ccc; /* Grey border */
+    padding: 10px;
+    background-color: #fff; /* White background for the display */
+    border-radius: 5px;
+    text-align: center;
+}
+/* ... Existing styles ... */
+
+#fun-facts {
+    background-color: #ffccff; /* Light pink background */
+    border: 2px solid #dd99ff; /* Border color */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#fun-facts ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#fun-facts li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+#fun-facts li::before {
+    content: "\f058"; /* Font Awesome checkmark icon */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    color: #dd99ff; /* Icon color */
+    position: absolute;
+    left: -20px;
+    top: 2px;
+}
+
