@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/SI379/ps6/build/static/css/main.99f846d8.css",
+    "main.js": "/SI379/ps6/build/static/js/main.16140113.js",
+    "static/js/787.e8eabc5b.chunk.js": "/SI379/ps6/build/static/js/787.e8eabc5b.chunk.js",
+    "index.html": "/SI379/ps6/build/index.html",
+    "main.99f846d8.css.map": "/SI379/ps6/build/static/css/main.99f846d8.css.map",
+    "main.16140113.js.map": "/SI379/ps6/build/static/js/main.16140113.js.map",
+    "787.e8eabc5b.chunk.js.map": "/SI379/ps6/build/static/js/787.e8eabc5b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.99f846d8.css",
+    "static/js/main.16140113.js"
+  ]
+}
