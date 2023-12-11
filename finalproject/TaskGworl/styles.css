@@ -1,0 +1,125 @@
+body {
+    font-family: 'Quicksand', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fde2e4; /* Light pink background */
+    color: #4e342e; /* Brown text color */
+  }
+  
+  nav {
+    background-color: #ad1457; /* Dark pink */
+    padding: 10px;
+    text-align: center;
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin-right: 10px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    color: #ad1457; /* Dark pink heading color */
+  }
+  
+  input,
+  select,
+  button {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ad1457; /* Dark pink border */
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #8d6e63; /* Brown */
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #6d4c41; /* Darker brown on hover */
+  }
+  
+  .error {
+    color: #d32f2f; /* Red for error messages */
+  }
+  
+  #tasks-list {
+    margin-top: 20px;
+  }
+  
+  .task {
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #ad1457; /* Dark pink border */
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .task:hover {
+    background-color: #f5f5f5; /* Light gray on hover */
+  }
+  
+  .task.completed {
+    background-color: #fce4ec; /* Light pink for completed tasks */
+  }
+  
+  #profile-picture-preview {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  #profile-picture-preview-image {
+    max-width: 100px;
+    max-height: 100px;
+    margin-top: 10px;
+  }
+  /* Add styling for the textarea */
+textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ad1457; /* Dark pink border */
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+#page-title {
+    font-family: 'Quicksand', sans-serif;
+    color: #ad1457; /* Darker pink color */
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  
+  
+  
