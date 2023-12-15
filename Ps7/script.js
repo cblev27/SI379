@@ -2,11 +2,30 @@ document.addEventListener('DOMContentLoaded', function () {
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     let selectedTaskIndex = null;
     let workDuration = 25;
-    let breakDuration = 5;
+    let breakDurationInput = document.getElementById('breakDuration');
+    let breakDuration = parseInt(breakDurationInput.value, 10) || 5;
     let timerInterval;
     let sessionInProgress = false;
-    // let secondsLeft = 0;
+    let secondsLeft = 0;
 
+    const savedTimerState = JSON.parse(localStorage.getItem('timerState')) || {};
+    if (savedTimerState && savedTimerState.sessionInProgress) {
+        selectedTaskIndex = savedTimerState.selectedTaskIndex;
+        workDuration = savedTimerState.workDuration;
+        breakDuration = savedTimerState.breakDuration;
+        sessionInProgress = savedTimerState.sessionInProgress;
+        secondsLeft = savedTimerState.secondsLeft;
+
+        if (sessionInProgress) {
+            if (secondsLeft > 0) {
+                // If there are remaining seconds, resume the session
+                resumeSession();
+            } else {
+                // If no remaining seconds, start the break immediately
+                startBreak();
+            }
+        }
+    }
 
     function updateTaskList() {
         const taskListElement = document.getElementById('taskList');
@@ -29,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const taskDescriptionInput = document.getElementById('taskDescription');
         const taskName = taskNameInput.value.trim();
         const taskDescription = taskDescriptionInput.value.trim();
-    
+
         if (taskName !== '') {
             tasks.push({ name: taskName, description: taskDescription, workSessions: 0 });
             updateTaskList();
@@ -38,8 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
     }
-    
-    
 
     function removeTask(index) {
         tasks.splice(index, 1);
@@ -61,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
     }
+
     function selectTask(index) {
         selectedTaskIndex = index;
         secondsLeft = 0; // Reset remaining seconds when selecting a task
@@ -88,83 +106,66 @@ document.addEventListener('DOMContentLoaded', function () {
 
             timerInterval = setInterval(() => {
                 timerElement.textContent = formatTime(secondsLeft);
-                if (secondsLeft === 0) {
+                if (secondsLeft <= 0) {
                     clearInterval(timerInterval);
                     startBreak();
                 }
                 secondsLeft--;
+                saveTimerState();
             }, 1000);
 
             sessionInProgress = true;
         }
     }
 
-   
-
-    function startSession() {
-        if (selectedTaskIndex === null) {
-            alert('Please select a task before starting a session.');
-            return;
-        }
-
+    function resumeSession() {
         const timerElement = document.getElementById('timerDisplay');
         const sessionStatusLabel = document.getElementById('sessionStatus');
-        const workDurationInput = document.getElementById('workDuration');
 
-        workDuration = parseInt(workDurationInput.value, 10) || 25;
-
-        if (!sessionInProgress) {
-            if (secondsLeft === 0) {
-                // Only reset timer if it's a new session
-                timerElement.textContent = formatTime(workDuration * 60);
-                sessionStatusLabel.textContent = 'Work Session';
-                secondsLeft = workDuration * 60; // Reset secondsLeft for a new session
+        timerInterval = setInterval(() => {
+            timerElement.textContent = formatTime(secondsLeft);
+            if (secondsLeft <= 0) {
+                clearInterval(timerInterval);
+                startBreak();
             }
+            secondsLeft--;
+            saveTimerState();
+        }, 1000);
 
-            timerInterval = setInterval(() => {
-                timerElement.textContent = formatTime(secondsLeft);
-                if (secondsLeft === 0) {
-                    clearInterval(timerInterval);
-                    startBreak();
-                }
-                secondsLeft--;
-            }, 1000);
-
-            sessionInProgress = true;
-        }
+        sessionStatusLabel.textContent = 'Work Session';
     }
 
     function startBreak() {
         const timerElement = document.getElementById('timerDisplay');
         const sessionStatusLabel = document.getElementById('sessionStatus');
-    
+
         timerElement.textContent = formatTime(breakDuration * 60);
         sessionStatusLabel.textContent = 'Take a break';
-    
+
         tasks[selectedTaskIndex].workSessions += 1;
         updateTaskList();
         addLemonIcon();
         localStorage.setItem('tasks', JSON.stringify(tasks));
-    
+
         selectedTaskIndex = null;
         sessionInProgress = false; // Reset sessionInProgress
-    
+
         // Play the tone when the work session is done
         playTone();
-    
-        let secondsLeft = breakDuration * 60;
+
+        secondsLeft = breakDuration * 60;
         timerInterval = setInterval(() => {
             timerElement.textContent = formatTime(secondsLeft);
-            if (secondsLeft === 0) {
+            if (secondsLeft <= 0) {
                 clearInterval(timerInterval);
                 startSession();
             }
             secondsLeft--;
+            saveTimerState();
         }, 1000);
     }
-    
+
     function playTone() {
-       
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         oscillator.connect(audioContext.destination);
@@ -173,16 +174,12 @@ document.addEventListener('DOMContentLoaded', function () {
         oscillator.start();
         oscillator.stop(audioContext.currentTime + 1);
     }
-    
-    function stopSession() {
-        clearInterval(timerInterval);
-        sessionInProgress = false;
-    }
 
     function stopSession() {
         clearInterval(timerInterval);
-        sessionInProgress = false; // Reset sessionInProgress
+        sessionInProgress = false;
         selectedTaskIndex = null;
+        saveTimerState();
     }
 
     function addLemonIcon() {
@@ -204,6 +201,22 @@ document.addEventListener('DOMContentLoaded', function () {
         return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     }
 
+    function saveTimerState() {
+        const timerState = {
+            selectedTaskIndex,
+            workDuration,
+            breakDuration,
+            sessionInProgress,
+            secondsLeft,
+        };
+        localStorage.setItem('timerState', JSON.stringify(timerState));
+    }
+
+    breakDurationInput.addEventListener('change', function () {
+        breakDuration = parseInt(breakDurationInput.value, 10) || 5;
+        saveTimerState();
+    });
+
     document.getElementById('addTaskButton').addEventListener('click', addTask);
     document.getElementById('startButton').addEventListener('click', startSession);
     document.getElementById('stopButton').addEventListener('click', stopSession);
@@ -221,7 +234,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    
     updateTaskList();
-
 });
+
