@@ -15,10 +15,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   
     function handleButtonClick(value) {
-      if (isNaN(parseFloat(value))) {
+      if (value === ".") {
+        handleDecimalPoint();
+      } else if (isNaN(parseFloat(value))) {
         handleOperator(value);
       } else {
         handleNumber(value);
+      }
+    }
+  
+    function handleDecimalPoint() {
+      if (!currentInput.includes(".")) {
+        currentInput += ".";
       }
     }
   
@@ -37,13 +45,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   
     function handleNumber(value) {
-      if (waitingForSecondOperand) {
-        currentInput = value;
-        waitingForSecondOperand = false;
-      } else {
-        currentInput += value;
+        if (waitingForSecondOperand) {
+          currentInput = value;
+          waitingForSecondOperand = false;
+        } else {
+          currentInput += value;
+        }
       }
-    }
+      
+      function toggleSign() {
+        currentInput = currentInput.startsWith("-") ? currentInput.slice(1) : `-${currentInput}`;
+      }
+    
   
     function setOperator(value) {
       if (firstOperand === null) {
@@ -59,31 +72,33 @@ document.addEventListener("DOMContentLoaded", function () {
   
     function calculate() {
       const secondOperand = parseFloat(currentInput);
-      switch (operator) {
-        case "+":
-          firstOperand += secondOperand;
-          break;
-        case "-":
-          firstOperand -= secondOperand;
-          break;
-        case "*":
-          firstOperand *= secondOperand;
-          break;
-        case "/":
-          if (secondOperand !== 0) {
-            firstOperand /= secondOperand;
-          } else {
-            alert("Cannot divide by zero!");
-            clearCalculator();
-            return;
-          }
-          break;
-        default:
-          break;
+      if (!isNaN(secondOperand)) {
+        switch (operator) {
+          case "+":
+            firstOperand += secondOperand;
+            break;
+          case "-":
+            firstOperand -= secondOperand;
+            break;
+          case "*":
+            firstOperand *= secondOperand;
+            break;
+          case "/":
+            if (secondOperand !== 0) {
+              firstOperand /= secondOperand;
+            } else {
+              alert("Cannot divide by zero!");
+              clearCalculator();
+              return;
+            }
+            break;
+          default:
+            break;
+        }
+        currentInput = firstOperand.toString();
+        operator = "";
+        waitingForSecondOperand = false;
       }
-      currentInput = firstOperand.toString();
-      operator = "";
-      waitingForSecondOperand = false;
     }
   
     function clearCalculator() {
@@ -96,7 +111,12 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateDisplay() {
       display.value = currentInput || "0";
     }
+    document.getElementById("toggle-sign").addEventListener("click", function () {
+        toggleSign();
+        updateDisplay();
   });
+});
+  
   
   
   
